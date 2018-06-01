@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>时报 - 摩尔档案馆</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+        <button type="button" id="prev">上一个</button>
+        <button type="button" id="next">下一个</button>
+    </p>
+    <div id="swf"></div>
+    <p>摩尔时报第 206 ~ 338 期的 SWF 无法独立播放，故暂未收录。
+        <br>跳转到指定页请在地址栏中修改。</p>
+    <p>
+        <a href="../">回到主页</a>
+    </p>
+    <script>
+        var swf = document.getElementById("swf")
+        var prev = document.getElementById("prev")
+        var next = document.getElementById("next")
+
+        onload = loadFlash
+        onhashchange = loadFlash
+
+        prev.onclick = function () {
+            location.hash = "#" + (getVol() - 1)
+            loadFlash()
+        }
+        next.onclick = function () {
+            location.hash = "#" + (getVol() + 1)
+            loadFlash()
+        }
+
+        function getVol() {
+            var vol = parseInt(location.hash.substring(1))
+            if (location.hash && vol)
+                return clamp(vol, 1, 205)
+            else
+                return 1
+        }
+
+        function loadFlash() {
+            var vol = getVol()
+            location.href = "#" + vol
+            setTimeout(function () { // IE / Edge issue http://even713.iteye.com/blog/698272
+                document.title = "时报 #" + vol + " - 摩尔档案馆"
+            }, 0)
+            swf.innerHTML = '<embed type="application/x-shockwave-flash" src="' + vol +
+                '.swf" width="960" height="560">'
+        }
+
+        function clamp(i, min, max) {
+            return i < min ? min : (i > max ? max : i)
+        }
+    </script>
+</body>
+
+</html>
